@@ -62,7 +62,6 @@ enum APIRouter: URLRequestConvertible {
         urlRequest.httpMethod = method.rawValue
         urlRequest.allHTTPHeaderFields = headers
         urlRequest.timeoutInterval = TimeInterval(10 * 1000)
-        print("URL REQUESTED IS \(urlRequest)")
         return try URLEncoding.default.encode(urlRequest, with: parameters)
     }
 }
