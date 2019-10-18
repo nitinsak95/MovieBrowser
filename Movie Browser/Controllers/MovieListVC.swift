@@ -71,14 +71,18 @@ class MovieListVC: UIViewController {
     
     //Search Movies
     @objc func searchMovies(){
-        guard let searchText1 = searchBar.text else { return }
-        APIClient.shared.getSearchedMovieList(searchText: searchText1){ response in
+        guard let searchText = searchBar.text else { return }
+        APIClient.shared.getSearchedMovieList(searchText: searchText){ response in
             guard let movieList = response?.results, let totalItems = response?.total_results else { return }
             self.data = movieList
             self.totalResults = totalItems
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
+        }
+        if searchText == ""{
+            self.data.removeAll()
+            getMovieList()
         }
     }
     
@@ -123,6 +127,10 @@ extension MovieListVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(searchMovies), object: nil)
         perform(#selector(searchMovies), with: nil, afterDelay: 0.5)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
+        searchBar.endEditing(true)
     }
     
 }

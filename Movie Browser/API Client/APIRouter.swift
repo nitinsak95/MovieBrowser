@@ -55,13 +55,14 @@ enum APIRouter: URLRequestConvertible {
     // MARK: - URLRequestConvertible
     func asURLRequest() throws -> URLRequest {
         let url = try K.ProductionServer.baseURL.asURL()
-        let str = URL(string: url.appendingPathComponent(path).absoluteString.removingPercentEncoding ?? "")
+        var str: URL?
+        str = URL(string: url.appendingPathComponent(path).absoluteString.removingPercentEncoding ?? "")
+        str = URL(string: url.appendingPathComponent(path).absoluteString.replacingOccurrences(of: "%3F", with: "?"))
         var urlRequest = URLRequest(url: str!)
         urlRequest.httpMethod = method.rawValue
         urlRequest.allHTTPHeaderFields = headers
         urlRequest.timeoutInterval = TimeInterval(10 * 1000)
-        print("URLREQUESTED IS \(urlRequest)")
+        print("URL REQUESTED IS \(urlRequest)")
         return try URLEncoding.default.encode(urlRequest, with: parameters)
     }
 }
-
