@@ -54,18 +54,8 @@ enum APIRouter: URLRequestConvertible {
     
     // MARK: - URLRequestConvertible
     func asURLRequest() throws -> URLRequest {
-        
-        let allowedCharacterSet = (CharacterSet(charactersIn: "? ").inverted)
-//
-//        if let escapedString = originalString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) {
-//            //do something with escaped string
-//        }
-        
-//        let allowedQueryParamAndKey =  NSCharacterSet.urlQueryAllowed.remove(";/?:@&=+$, ")
-//        paramOrKey.addingPercentEncoding(withAllowedCharacters: allowedQueryParamAndKey)
-//        
         let url = try K.ProductionServer.baseURL.asURL()
-        let str = URL(string: url.appendingPathComponent(path).absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)!)
+        let str = URL(string: url.appendingPathComponent(path).absoluteString.removingPercentEncoding ?? "")
         var urlRequest = URLRequest(url: str!)
         urlRequest.httpMethod = method.rawValue
         urlRequest.allHTTPHeaderFields = headers
@@ -75,11 +65,3 @@ enum APIRouter: URLRequestConvertible {
     }
 }
 
-//extension String {
-//    func stringByAddingPercentEncodingForRFC3986() -> String? {
-//        let unreserved = "-._~/?"
-//        let allowed = NSMutableCharacterSet.alphanumeric()
-//        allowed.addCharacters(in: unreserved)
-//        return stringByAddingPercentEncodingWithAllowedCharacters(allowed)
-//    }
-//}
