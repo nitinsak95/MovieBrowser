@@ -64,4 +64,5 @@ enum APIRouter: URLRequestConvertible {
         urlRequest.timeoutInterval = TimeInterval(10 * 1000)
         return try URLEncoding.default.encode(urlRequest, with: parameters)
     }
+    
 }

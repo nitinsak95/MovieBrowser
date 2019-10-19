@@ -18,6 +18,14 @@ class MovieListTableCell: UITableViewCell {
     @IBOutlet weak var lblVoteAverage: UILabel!
     @IBOutlet weak var lblVoteCount: UILabel!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        imgMovie.layer.masksToBounds = true
+        imgMovie.layer.cornerRadius = 4
+        
+    }
+    
     func configureCell(for data: MovieData, index: Int){
         let imgURL = URL(string: K.ProductionServer.imageBaseURL + (data.poster_path ?? ""))
         imgMovie.kf.setImage(with: imgURL)
